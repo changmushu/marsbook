@@ -1,0 +1,32 @@
+Name: marsbook-api
+Host: 0.0.0.0
+Port: 8888
+
+# 超时时间5分钟 单位ms
+Timeout: 50000
+
+# 连接mysql
+Mysql:
+  DataSource: gozero:Gozero@123@tcp(localhost:3306)/gozero?charset=utf8mb4&parseTime=true&loc=Asia%2FShanghai
+
+Auth:
+  # 生成jwt token的密钥，最简单的方式可以使用一个uuid值。mysql中查询SELECT UUID() ;
+  AccessSecret: fc56415b-adcd-11ed-be1f-000c299105a2
+  # jwt token有效期，单位：秒  设置24小时
+  AccessExpire: 86400
+
+# 日志
+Log:
+  # 类似于spring boot打印日志
+  Encoding: plain
+  # 日志级别
+  Level: debug
+  # 不打印stat日志
+  Stat: false
+  # 记录在文件 options=[console,file,volume]
+  Mode: console  
+  # 日志文件被保留多少天
+  KeepDays: 1
+  # 自定义时间格式
+  TimeFormat: 2006-01-02 15:04:05
+

@@ -1,0 +1,83 @@
+// 版本描述
+syntax = "v1"
+
+//描述结构体
+type (
+
+	//用户登录功能---入参
+	LoginReq {
+		Userid   string `json:"userId"`
+		Password string `json:"password"`
+	}
+
+	//用户登录功能---出参
+	LoginReply {
+		Code    string         `json:"code"`
+		Message string         `json:"message"`
+		Data    LoginReplyData `json:"data"`
+	}
+
+	LoginReplyData {
+		AccessToken  string `json:"token"`
+		AccessExpire int64  `json:"accessExpire"`
+	}
+
+	//用户详细信息---入参
+	UserInfoReq {
+		Userid string `form:"userId"`
+	}
+
+	//用户详细信息---出参
+	UserInfoReply {
+		Code    string            `json:"code"`
+		Message string            `json:"message"`
+		Data    UserInfoReplyData `json:"data"`
+	}
+
+	UserInfoReplyData {
+		Id       int64  `json:"id"`
+		Userid   string `json:"userId"`
+		Username string `json:"name"`
+		Role     string `json:"role"`   //用户角色
+		Avatar   string `json:"avatar"` //用户图像
+	}
+
+	//角色对应菜单---入参
+	RoleMenuReq {
+		Role string `form:"role"`
+	}
+
+	//角色对应菜单---出参
+	RoleMenuReply {
+		Code    string      `json:"code"`
+		Message string      `json:"message"`
+		Data    interface{} `json:"data"` //空接口，接收任意类型
+	}
+)
+
+@server(
+	middleware: Cors // 路由中间件，解决跨域问题
+)
+service marsbook-api {
+
+	//用户登录
+	@handler login
+	post /user/login (LoginReq) returns (LoginReply)
+
+}
+
+// 以下api,需要jwt验证
+@server(
+	jwt: Auth
+)
+service marsbook-api {
+
+	//用户详细信息
+	@handler userinfo
+	get /user/userinfo (UserInfoReq) returns (UserInfoReply)
+
+	//获取角色对应菜单
+	@handler rolemenu
+	get /user/rolemenu (RoleMenuReq) returns (RoleMenuReply)
+
+}
